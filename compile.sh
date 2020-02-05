@@ -7,7 +7,7 @@ set -x
 set -e
 
 # Run bikeshed.  If there are errors, exit with a non-zero code
-bikeshed --print=plain -f spec
+bikeshed --die-on=nothing --print=plain -f spec
 
 # The out directory should contain everything needed to produce the
 # HTML version of the spec.  Copy things there if the directory exists.
