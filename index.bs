@@ -23,7 +23,7 @@
 	.p-summary {width: 50%; margin-left: 24px; padding: 0px;}
 }
 .new {
-    border: solid 4px green;
+    border: solid 3px green;
     padding: 6px;
     margin: 18px 0px 18px 0px;
 }
