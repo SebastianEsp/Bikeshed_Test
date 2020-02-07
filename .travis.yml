@@ -1,21 +1,22 @@
-language: python
-sudo: false
-python:
-  - "2.7"
+language: generic # don't install any environment
+script:
+- bash ./compile.sh
+
+branches:
+  only:
+  - master
 
 before_deploy:
 - openssl aes-256-cbc -K $encrypted_2eac893f4339_key -iv $encrypted_2eac893f4339_key -in deploy_key.enc -out deploy_key -d
 
-install:
-  # Setup bikeshed. See https://tabatkins.github.io/bikeshed/#install-linux
-  - git clone https://github.com/tabatkins/bikeshed.git
-  - pip install --editable $PWD/bikeshed
-  - bikeshed update
- 
-script:
-  - bash ./deploy.sh
+deploy:
+  provider: pages
+  local_dir: out
+  deploy_key: deploy_key
+  edge:
+    branch: master
 
-env:
-  global:
-  - ENCRYPTION_LABEL: "2eac893f4339"
-  - COMMIT_AUTHOR_EMAIL: "sebastianesp@hotmail.com"
+notifications:
+  email:
+    on_success: never
+    on_failure: always
