@@ -1,17 +1,28 @@
-#!/bin/bash
+SHELL=/bin/bash
 
-# So we can see what we're doing
-set -x
+local: index.bs
+	bikeshed --die-on=nothing spec index.bs
 
-# Exit with nonzero exit code if anything fails
-set -e
+index.bs: index.bs
+	@ (HTTP_STATUS=$$(curl https://api.csswg.org/bikeshed/ \
+	                       --output index.html \
+	                       --write-out "%{http_code}" \
+	                       --header "Accept: text/plain, text/html" \
+	                       -F die-on=nothing \
+	                       -F file=@index.bs) && \
+	[[ "$$HTTP_STATUS" -eq "200" ]]) || ( \
+		echo ""; cat index.html; echo ""; \
+		rm -f index.html; \
+		exit 22 \
+	);
 
-# Run bikeshed.  If there are errors, exit with a non-zero code
-bikeshed --die-on=nothing --print=plain -f spec
+remote: index.html
 
-# The out directory should contain everything needed to produce the
-# HTML version of the spec.  Copy things there if the directory exists.
+ci: index.bs
+	mkdir -p out
+	make remote
+	mv index.html out/index.html
 
-if [ -d out ]; then
-    cp index.html out
-fi
+clean:
+	rm index.html
+	rm -rf out
