@@ -3,7 +3,7 @@ SHELL=/bin/bash
 local: index.bs
 	bikeshed --die-on=nothing spec index.bs
 
-index.bs: index.bs
+index.html: index.bs
 	@ (HTTP_STATUS=$$(curl https://api.csswg.org/bikeshed/ \
 	                       --output index.html \
 	                       --write-out "%{http_code}" \
