@@ -7,7 +7,7 @@ branches:
   - master
 
 before_deploy:
-- openssl aes-256-cbc -K $encrypted_2eac893f4339_key -iv $encrypted_2eac893f4339_iv -in deploy_key.enc -out deploy_key -d
+- openssl aes-256-cbc -K 2eac893f4339 -iv 2eac893f4339 -in deploy_key.enc -out deploy_key -d
 
 deploy:
   provider: pages
